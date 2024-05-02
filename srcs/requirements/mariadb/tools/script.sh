@@ -1,0 +1,21 @@
+# START MYSQL
+service mysql start;
+
+# SET ROOT PASSWORD
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+
+# CREATE DATABASE
+mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+
+# CREATE USER
+mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+
+# GRANT PRIVILEGES
+mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'localhost';"
+
+# FLUSH PRIVILEGES
+mysql -e "FLUSH PRIVILEGES;"
+
+mysqladmin -u root -p $MYSQL_ROOT_PASSWORD shutdown
+
+exec mysqld_safe
