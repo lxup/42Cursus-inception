@@ -30,9 +30,10 @@ services:
       - .env
     depends_on:
       - wordpress
-      # - adminer
-      # - redis
-      # - loupquehec
+      - adminer
+      - redis
+      - naegativ
+      - cadvisor
     ports:
       - 443:443
     volumes:
@@ -47,24 +48,24 @@ services:
     build: ./requirements/bonus/redis
     depends_on:
       - wordpress
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
     env_file:
       - .env
     networks:
       - network
     restart: on-failure
 
-  # adminer:
-  #   container_name: adminer
-  #   build: ./requirements/bonus/adminer
-  #   depends_on:
-  #     - mariadb
-  #   expose:
-  #     - 9000
-  #   networks:
-  #     - network
-  #   restart: on-failure
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    depends_on:
+      - mariadb
+    # ports:
+    #   - 80:8080
+    networks:
+      - network
+    restart: on-failure
 
   ftp:
     container_name: ftp
@@ -80,19 +81,19 @@ services:
       - network
     restart: on-failure
   
-  # loupquehec:
-  #   container_name: loupquehec
-  #   build: ./requirements/bonus/loupquehec
-  #   networks:
-  #     - network
-  #   restart: on-failure
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements/bonus/cadvisor
+    networks:
+      - network
+    restart: on-failure
 
-  # static_page:
-  #   container_name: static_page
-  #   build: ./requirements/bonus/static_page
-  #   networks:
-  #     - network
-  #   restart: on-failure
+  naegativ:
+    container_name: naegativ
+    build: ./requirements/bonus/naegativ
+    networks:
+      - network
+    restart: on-failure
 
 volumes:
   mariadb:

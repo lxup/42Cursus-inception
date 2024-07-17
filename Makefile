@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/09 20:59:39 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/17 19:00:26 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,9 @@ WHITE			=	\033[1;37m
 # **************************************************************************** #
 
 DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
+
+HOSTS_TO_ADD := lquehec.42.fr adminer.lquehec.42.fr naegativ.lquehec.42.fr cadvisor.lquehec.42.fr
+
 
 # **************************************************************************** #
 #                                   VOLUME                                     #
@@ -80,14 +83,15 @@ create_volumes:
 	@sudo chmod -R 777 $(HOME)/data
 
 host:
-	@sudo sed -i 's|localhost|lquehec.42.fr|g' /etc/hosts
-
-
-# clean: down
-# 	@docker stop $(shell docker ps -a -q)
-# 	@docker rm $(shell docker ps -a -q)
-# 	@docker rmi $(shell docker images -q)
-# 	@docker volume rm $(shell docker volume ls -q)
-# 	@docker network rm $(shell docker network ls -q)
+	@if ! grep -q "127.0.0.1" /etc/hosts; then \
+		echo "$(YELLOW)Adding localhost to /etc/hosts...$(END)"; \
+		echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts; \
+	fi
+	@for host in $(HOSTS_TO_ADD); do \
+		if ! grep -q " $$host " /etc/hosts; then \
+			echo "$(YELLOW)Adding host $$host to /etc/hosts...$(END)"; \
+			echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts; \
+		fi \
+	done
 
 .PHONY: all up down re clean fclean
