@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/24 20:32:27 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/24 20:45:49 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,16 +83,12 @@ create_volumes:
 	@sudo chmod -R 777 $(HOME)/data
 
 host:
-	@if ! grep -q "127.0.0.1" /etc/hosts; then \
-		echo "$(YELLOW)Adding localhost to /etc/hosts...$(END)"; \
-		echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts; \
-	fi
 	@for host in $(HOSTS_TO_ADD); do \
-		if ! grep -q " $$host " /etc/hosts; then \
-			echo "$(YELLOW)Adding host $$host to /etc/hosts...$(END)"; \
-			echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts; \
-		else \
+		if grep " $$host" /etc/hosts; then \
 			echo "$(GREEN)Host $$host already exists in /etc/hosts, skipping...$(END)"; \
+		else \
+			echo "$(GREEN)Adding host $$host to /etc/hosts$(END)"; \
+			echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts > /dev/null; \
 		fi \
 	done
 
