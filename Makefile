@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/17 19:00:26 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/24 20:32:27 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,6 +91,8 @@ host:
 		if ! grep -q " $$host " /etc/hosts; then \
 			echo "$(YELLOW)Adding host $$host to /etc/hosts...$(END)"; \
 			echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts; \
+		else \
+			echo "$(GREEN)Host $$host already exists in /etc/hosts, skipping...$(END)"; \
 		fi \
 	done
 
