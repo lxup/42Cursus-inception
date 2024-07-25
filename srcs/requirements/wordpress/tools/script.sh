@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PHP_VERSION=$(php -v | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2)
-echo "PHP_VERSION: ${PHP_VERSION}"
+# echo "PHP_VERSION: ${PHP_VERSION}"
 
 # Move the configuration file to the correct location
 mv /tmp/www.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
