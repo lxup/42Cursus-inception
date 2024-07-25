@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PHP_VERSION=$(php -v | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2)
 echo "PHP_VERSION: ${PHP_VERSION}"
 
 sed -i 's|{{WORDPRESS_PORT}}|'${WORDPRESS_PORT}'|g' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
@@ -26,4 +27,4 @@ else
 	wp redis enable --allow-root
 fi
 
-"/usr/sbin/php-fpm"${PHP_VERSION} -F
+/usr/sbin/php-fpm${PHP_VERSION} -F

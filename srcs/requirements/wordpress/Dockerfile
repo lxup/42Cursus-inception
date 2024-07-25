@@ -14,9 +14,6 @@ RUN		apt -y update && \
 		rm -rf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
 		mkdir -p /run/php
 
-# Define PHP_VERSION as an environment variable
-ENV PHP_VERSION $(php -v | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2)
-
 # LAUNCH SCRIPT
 COPY	./tools/script.sh /tmp/script.sh
 COPY	./conf/www.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
