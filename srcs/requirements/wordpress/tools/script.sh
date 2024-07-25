@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "PHP_VERSION: ${PHP_VERSION}"
+
 sed -i 's|{{WORDPRESS_PORT}}|'${WORDPRESS_PORT}'|g' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 
 if [ -f "$WORDPRESS_PATH/wp-config.php" ]; then
