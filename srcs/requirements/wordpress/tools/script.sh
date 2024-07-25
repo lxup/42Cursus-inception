@@ -24,4 +24,4 @@ else
 	wp redis enable --allow-root
 fi
 
-/usr/sbin/php-fpm$PHP_VERSION -F
+/usr/sbin/php-fpm ${PHP_VERSION} -F
