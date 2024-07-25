@@ -4,7 +4,6 @@ FROM debian:bullseye
 RUN		apt -y update && \
 		apt install -y php && \
 		PHP_VERSION=$(php -v | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2) && \
-			export PHP_VERSION && \
 		apt install -y \
 			php-fpm \
 			php-mysql \
@@ -14,6 +13,9 @@ RUN		apt -y update && \
 			curl && \
 		rm -rf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
 		mkdir -p /run/php
+
+# Define PHP_VERSION as an environment variable
+ENV PHP_VERSION $(php -v | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2)
 
 # LAUNCH SCRIPT
 COPY	./tools/script.sh /tmp/script.sh
