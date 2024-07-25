@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i 's|{{WORDPRESS_PORT}}|'${WORDPRESS_PORT}'|g' /etc/php/7.3/fpm/pool.d/www.conf
+sed -i 's|{{WORDPRESS_PORT}}|'${WORDPRESS_PORT}'|g' /etc/php/$PHP_VERSION/fpm/pool.d/www.conf
 
 if [ -f "$WORDPRESS_PATH/wp-config.php" ]; then
 	echo "WordPress already installed"
@@ -24,4 +24,4 @@ else
 	wp redis enable --allow-root
 fi
 
-/usr/sbin/php-fpm7.3 -F
+/usr/sbin/php-fpm$PHP_VERSION -F
