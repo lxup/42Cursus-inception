@@ -8,7 +8,6 @@ RUN		apt -y update && \
 			php-mysql \
 			php-cli \
 			php-mbstring \
-			php-gettext \
 			mariadb-client \
 			curl && \
 		rm -rf /etc/php/7.3/fpm/pool.d/www.conf && \
