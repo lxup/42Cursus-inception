@@ -27,6 +27,6 @@ RUN case $TARGETARCH in \
     esac
 
 # EXPOSE PORT
-EXPOSE 8080
+# EXPOSE 8080
 
 CMD ["./cadvisor"]

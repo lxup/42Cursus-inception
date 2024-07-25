@@ -30,7 +30,7 @@ COPY --from=builder /naegativ .
 RUN npm install --only=prod
 
 # EXPOSE PORT
-EXPOSE 3000
+# EXPOSE 3000
 
 # START APPLICATION
 CMD ["npm", "start"]
