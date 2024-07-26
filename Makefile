@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/24 20:45:49 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/26 16:25:42 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,13 +35,24 @@ LIGHT_CYAN		=	\033[1;36m
 WHITE			=	\033[1;37m
 
 # **************************************************************************** #
+#                                   COMMAND                                    #
+# **************************************************************************** #
+
+DOCKER_COMPOSE = docker compose
+
+if [ -x "$(command -v docker-compose)" ]; then
+	DOCKER_COMPOSE = docker-compose
+endif
+
+# **************************************************************************** #
 #                                   SOURCES                                    #
 # **************************************************************************** #
 
-DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
+SRCS_PATH = ./srcs
+
+DOCKER_COMPOSE_FILE = $(SRCS_PATH)/docker-compose.yml
 
 HOSTS_TO_ADD := lquehec.42.fr adminer.lquehec.42.fr naegativ.lquehec.42.fr cadvisor.lquehec.42.fr
-
 
 # **************************************************************************** #
 #                                   VOLUME                                     #
@@ -53,21 +64,21 @@ USER_HOME = $(shell echo ~)
 #                                    RULES                                     #
 # **************************************************************************** #
 
-all: host create_volumes up
+all: check_env host create_volumes up
 
 up:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) up -d --build 
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --build 
 
 down:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) down -v --remove-orphans
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v --remove-orphans
 
 re: down up
 
 logs:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) logs -f
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) logs -f
 
 clean:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) down -v --remove-orphans --rmi all
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v --remove-orphans --rmi all
 
 fclean: clean
 	@sudo rm -rd $(USER_HOME)/data/mysql
@@ -91,5 +102,11 @@ host:
 			echo "127.0.0.1 $$host" | sudo tee -a /etc/hosts > /dev/null; \
 		fi \
 	done
+
+check_env:
+	@if [ ! -f $(SRCS_PATH)/.env ]; then \
+		echo "$(RED)Error: .env file not found!$(END)"; \
+		exit 1; \
+	fi
 
 .PHONY: all up down re clean fclean
