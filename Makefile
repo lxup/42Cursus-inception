@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/26 16:25:42 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/26 16:28:34 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,11 +38,7 @@ WHITE			=	\033[1;37m
 #                                   COMMAND                                    #
 # **************************************************************************** #
 
-DOCKER_COMPOSE = docker compose
-
-if [ -x "$(command -v docker-compose)" ]; then
-	DOCKER_COMPOSE = docker-compose
-endif
+DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null || command -v docker compose)
 
 # **************************************************************************** #
 #                                   SOURCES                                    #
