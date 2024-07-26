@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/26 16:37:18 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/26 16:39:27 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,11 +41,8 @@ WHITE			=	\033[1;37m
 DOCKER_COMPOSE := $(shell \
     if command -v docker compose > /dev/null 2>&1; then \
         echo "docker compose"; \
-    elif command -v docker-compose > /dev/null 2>&1; then \
-        echo "docker-compose"; \
     else \
-        echo "docker compose or docker-compose not found"; \
-        exit 1; \
+        echo "docker-compose"; \
     fi)
 # **************************************************************************** #
 #                                   SOURCES                                    #
@@ -67,7 +64,7 @@ USER_HOME = $(shell echo ~)
 #                                    RULES                                     #
 # **************************************************************************** #
 
-all: check_env host create_volumes up
+all: check_docker check_env host create_volumes up
 
 up:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --build 
@@ -109,6 +106,17 @@ host:
 check_env:
 	@if [ ! -f $(SRCS_PATH)/.env ]; then \
 		echo "$(RED)Error: .env file not found!$(END)"; \
+		exit 1; \
+	fi
+
+check_docker:
+	@if ! docker --version > /dev/null 2>&1; then \
+		echo "$(RED)Error: Docker not installed!$(END)"; \
+		exit 1; \
+	fi
+
+	@if ! $(DOCKER_COMPOSE) --version > /dev/null 2>&1; then \
+		echo "$(RED)Error: Docker Compose not installed!$(END)"; \
 		exit 1; \
 	fi
 
