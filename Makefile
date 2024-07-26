@@ -6,7 +6,7 @@
 #    By: lquehec <lquehec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 16:57:22 by lquehec           #+#    #+#              #
-#    Updated: 2024/07/26 16:32:05 by lquehec          ###   ########.fr        #
+#    Updated: 2024/07/26 16:37:18 by lquehec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,15 @@ WHITE			=	\033[1;37m
 #                                   COMMAND                                    #
 # **************************************************************************** #
 
-DOCKER_COMPOSE := $(shell if command -v docker-compose > /dev/null 2>&1; then echo "docker-compose"; elif command -v docker compose > /dev/null 2>&1; then echo "docker compose"; else echo "docker-compose not found"; exit 1; fi)
-
+DOCKER_COMPOSE := $(shell \
+    if command -v docker compose > /dev/null 2>&1; then \
+        echo "docker compose"; \
+    elif command -v docker-compose > /dev/null 2>&1; then \
+        echo "docker-compose"; \
+    else \
+        echo "docker compose or docker-compose not found"; \
+        exit 1; \
+    fi)
 # **************************************************************************** #
 #                                   SOURCES                                    #
 # **************************************************************************** #
